@@ -1,0 +1,36 @@
+
+    <main>
+         <section class="profile-section">
+            <h1>Профиль пользователя - {{person.username}}</h1>
+                <div class="user-profile">
+                    <div class="avatar-upload">
+                        <img src="/media/img/{{#if person.image}}{{person.image}}{{else}}default.png{{/if}}" alt="Аватар пользователя" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <p for="username"><strong>Имя пользователя:</strong> {{person.username}}</p>
+                        <p for="username"><strong>Электронная почта:</strong> {{person.email}}</p>
+                        <form action="/messages" method="post">
+                        <input type="hidden" name="recipientId" value="{{person._id}}">
+                        <input type="submit" value="Написать сообщение">
+                        </form>
+                    </div>
+                </div>
+            <h2 style="margin-top: 100px">Статьи пользователя:</h2>
+            <section class="articles">
+            {{#each articles}}
+            <div class="article-card">
+                <h2>{{this.title}}</h2>
+                <p>
+                    Автор - {{this.author.username}}
+                </p>
+                <p class="date">Дата публикации: {{getTime this.createdAt}}</p>
+                <div class="image-container">
+                    <img src="/media/img/{{this.image}}" alt="Изображение статьи" class="article-image">
+                </div>
+                <p class="description">{{getShortDescription this.description}}</p>
+                <a href="/article/{{this._id}}" class="read-more">Читать далее...</a>
+            </div>
+            {{/each}}
+        </section>
+        </section>
+    </main>

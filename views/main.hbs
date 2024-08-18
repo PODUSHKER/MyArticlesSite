@@ -1,0 +1,32 @@
+    <main>
+        <aside class="filter-panel">
+            <h2>Поиск</h2>
+            <form action="/" id="search" method="get">
+                
+                <label for="search">Название:</label>
+                <input type="text" id="search" name="search" placeholder="Введите название">
+                
+                <button type="submit" onclick="applyFilter()">Применить</button>
+            </form>
+        </aside>
+        <section class="articles">
+            {{#each articles}}
+            <div class="article-card">
+                <h2>{{this.title}}</h2>
+                <p>
+                    {{#if (isEqualId this.author._id ../user._id)}}
+                    Автор - {{this.author.username}}
+                    {{else}}
+                    Автор - <a href="/user/profile/{{this.author._id}}" class="custom-link">{{this.author.username}}</a>
+                    {{/if}}
+                </p>
+                <p class="date">Дата публикации: {{getTime this.createdAt}}</p>
+                <div class="image-container">
+                    <img src="/media/img/{{this.image}}" alt="Изображение статьи" class="article-image">
+                </div>
+                <p class="description">{{getShortDescription this.description}}</p>
+                <a href="/article/{{this._id}}" class="read-more">Читать далее...</a>
+            </div>
+            {{/each}}
+        </section>
+    </main>

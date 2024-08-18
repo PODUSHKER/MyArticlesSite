@@ -1,0 +1,19 @@
+
+    <main>
+        <section class="auth-section">
+            <h1>Войти</h1>
+            <form action="" method="post">
+                {{#each errors}}
+                <p style="color:#f00;">{{this.msg}}{{this.message}}</p>
+                {{/each}}
+                <label for="login">Логин:</label>
+                <input type="text" id="login" name="login">
+                
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password">
+                
+                <button type="submit">Войти</button>
+            </form>
+            <p>Нет аккаунта? <a href="/user/auth/register">Регистрация</a></p>
+        </section>
+    </main>

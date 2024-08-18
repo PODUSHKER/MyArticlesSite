@@ -1,0 +1,110 @@
+<main class="messages-page">
+    <aside class="chat-list">
+        <h2>Чаты</h2>
+        <ul>
+            {{#each chats}}
+            <li class="chat-item {{#if (isEqualId ../chat this)}}active{{/if}}">
+                <a href="/messages/{{this._id}}" data-chat-id="1">
+                <img src="/media/img/{{this.recipient.image}}" alt="Имя пользователя 2" class="chat-avatar">
+                {{this.recipient.username}}
+                </a>
+            </li>
+            {{/each}}
+            <!-- Добавить другие чаты здесь -->
+        </ul>
+    </aside>
+    <section class="chat-window">
+        <div class="chat-header">
+            {{#if chat}}
+            <img src="/media/img/{{chat.recipient.image}}" alt="Имя пользователя 1" class="header-avatar">
+            <h2>{{chat.recipient.username}}</h2>
+            {{/if}}
+        </div>
+        <div class="chat-content">
+            <!-- Сообщения будут загружены динамически -->
+            {{#each messages}}
+            <div id="{{this._id}}" class="message message-{{#if (isEqualId ../user._id this.from._id)}}sent{{else}}received{{/if}}">
+                <p class="message-author">{{this.from.username}}</p>
+                <p class="message-text">{{this.text}}</p>
+                <span class="message-time">{{getMessageTime this}}</span>
+            </div>
+            {{/each}}
+        </div>
+        {{#if chat}}
+        <div class="chat-input">
+            <form action="/messages/{{chat._id}}" method="post">
+                <input id="chatId" type="hidden" name="chatId" value="{{chat._id}}">
+                <textarea placeholder="Введите сообщение..." name="text"></textarea>
+                <input type="submit" value="Отправить">
+            </form>
+        </div>
+        {{/if}}
+    </section>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const form = document.forms[0]
+    const socket = io()
+    socket.on('updatePage', async (selector) => {
+        const html = await (await fetch(location.href)).text()
+        const newdoc = new DOMParser().parseFromString(html, 'text/html')
+        document.querySelector(selector).outerHTML = newdoc.querySelector(selector).outerHTML
+        scriptInit()
+        })
+        
+    async function scriptInit(){
+        const lastElement = document.querySelector('.chat-content').lastElementChild
+        if(lastElement){
+            lastElement.scrollIntoView()
+        }
+
+        async function submitHandler(e){
+            e.preventDefault()
+            const chatId = document.getElementById('chatId').value
+            const formData = new FormData(form)
+            const response = await (await fetch(`/messages/send/${chatId}`, {method: 'POST', body: formData})).json()
+            if(response.success){
+                const messageHtml = `
+                    <div id="${response.message._id}" class="message message-${String(response.message.from) === response['user']._id ? 'sent' : 'received'}">
+                        <p class="message-author">${response['user'].username}</p>
+                        <p class="message-text">${response.message.text}</p>
+                        <span class="message-time">${new Date(response.message.createdAt).toLocaleTimeString()}</span>
+                    </div>
+                `;
+                document.querySelector('.chat-content').insertAdjacentHTML('beforeend', messageHtml);
+                const lastMessage = document.getElementById(response.message._id);
+                lastMessage.scrollIntoView({ behavior: 'smooth' });
+                form.querySelector('textarea').value = '';
+
+                filterMessages()
+                socket.emit('messageIsSended');
+            }
+            
+            return
+        }
+
+        form.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter'){
+                e.preventDefault()
+                submitHandler(e)
+            }
+        })
+
+        form.addEventListener('submit', submitHandler)
+
+
+        function filterMessages(){
+            const messages = [...document.getElementsByClassName('message-author')]
+            let senderName = messages[0].innerHTML
+            for (let i of messages.slice(1)){
+                if (i.innerHTML === senderName || !i.innerHTML){
+                    i.innerHTML = ''
+                    continue
+                }
+                senderName = i.innerHTML
+            }
+        }
+        filterMessages()
+    }
+    scriptInit()
+</script>

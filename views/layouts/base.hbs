@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-left">
+                <li><a href="/">Главная</a></li>
+                {{#if user}}
+                <li><a href="/create">Создать статью</a></li>
+                <li><a href="/messages">Сообщения</a></li>
+                {{/if}}
+            </ul>
+            <ul class="nav-right">
+                {{#if user}}
+                <li><a href="/user/profile">{{user.username}}</a></li>
+                <li><a href="/user/auth/logout">Выйти</a></li>
+                {{else}}
+                <li><a href="/user/auth/login">Войти</a></li>
+                {{/if}}
+            </ul>
+        </nav>
+    </header>
+        {{{ body }}}
+</body>
+</html>

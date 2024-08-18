@@ -1,0 +1,40 @@
+
+    <main>
+         <section class="profile-section">
+            <h1>Мой профиль</h1>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="user-profile">
+                    <div class="avatar-upload">
+                        <img src="/media/img/{{#if user.image}}{{user.image}}{{else}}default.png{{/if}}" alt="Аватар пользователя" class="avatar">
+                        <input type="file" id="avatar-upload" name="image" class="avatar-upload-input">
+                    </div>
+                    <div class="user-info">
+                        <label for="username"><strong>Имя пользователя:</strong></label>
+                        <input type="text" id="username" name="username" value="{{user.username}}">
+                        
+                        <label for="email"><strong>Электронная почта:</strong></label>
+                        <input type="email" id="email" name="email" value="{{user.email}}">
+                        <input type="submit" value="Сохранить">
+                        
+                    </div>
+                </div>
+            </form>
+            <h2 style="margin-top: 100px">Мои статьи</h2>
+            <section class="articles">
+            {{#each articles}}
+            <div class="article-card">
+                <h2>{{this.title}}</h2>
+                <p>
+                    Автор - {{this.author.username}}
+                </p>
+                <p class="date">Дата публикации: {{getTime this.createdAt}}</p>
+                <div class="image-container">
+                    <img src="/media/img/{{this.image}}" alt="Изображение статьи" class="article-image">
+                </div>
+                <p class="description">{{getShortDescription this.description}}</p>
+                <a href="/article/{{this._id}}" class="read-more">Читать далее...</a>
+            </div>
+            {{/each}}
+        </section>
+        </section>
+    </main>

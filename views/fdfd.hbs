@@ -1,0 +1,45 @@
+<main class="messages-page">
+    <aside class="chat-list">
+        <h2>Чаты</h2>
+        <ul>
+            <li class="chat-item active">
+                <a href="#" data-chat-id="1">
+                    <img src="/media/img/user1.jpg" alt="Имя пользователя 1" class="chat-avatar">
+                    Имя пользователя 1
+                </a>
+            </li>
+            <li class="chat-item">
+                <a href="#" data-chat-id="2">
+                    <img src="/media/img/user2.jpg" alt="Имя пользователя 2" class="chat-avatar">
+                    Имя пользователя 2
+                </a>
+            </li>
+            <!-- Добавить другие чаты здесь -->
+        </ul>
+    </aside>
+    <section class="chat-window">
+        <div class="chat-header">
+            <img src="/media/img/user1.jpg" alt="Имя пользователя 1" class="header-avatar">
+            <h2>Имя пользователя 1</h2>
+        </div>
+        <div class="chat-content">
+            <!-- Сообщения -->
+            <div class="message message-sent">
+                <p class="message-author">Вы:</p>
+                <p class="message-text">Привет! Как дела?</p>
+                <span class="message-time">10:00</span>
+            </div>
+            <div class="message message-received">
+                <p class="message-author">Имя пользователя 1:</p>
+                <p class="message-text">Привет! Всё отлично, как ты?</p>
+                <span class="message-time">10:02</span>
+            </div>
+        </div>
+        <div class="chat-input">
+            <form>
+                <textarea placeholder="Введите сообщение..."></textarea>
+                <input type="submit" value="Отправить">
+            </form>
+        </div>
+    </section>
+</main>

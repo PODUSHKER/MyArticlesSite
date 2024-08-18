@@ -1,0 +1,39 @@
+
+    <main>
+        <section class="article-section">
+            <h1>{{ article.title }}</h1>
+            <p class="author">Автор: {{article.author.username}}</p>
+            <p class="date">Дата публикации: {{article.createdAt}}</p>
+            <div class="image-container">
+                <img src="/media/img/{{article.image}}" alt="Изображение статьи" class="article-image">
+            </div>
+            <div class="content">
+                <p>{{article.description}}</p>
+            </div>
+            <section class="comments-section">
+                <h2>Комментарии</h2>
+                <div class="add-comment">
+                    <h3>Добавить комментарий</h3>
+                    <form action="" method="post">
+                        <textarea name="text" rows="4" placeholder="Введите ваш комментарий..."></textarea>
+                        <input type="submit" value="Добавить комментарий">
+                    </form>
+                </div>
+                <div class="comments-list">
+                    {{#each comments}}
+                    <div class="comment" id="{{this._id}}">
+                        {{#if this.author.image}}
+                        <img src="/media/img/{{this.author.image}}" alt="Аватар пользователя" class="comment-avatar">
+                        {{else}}
+                        <img src="/media/img/default.png" alt="Аватар пользователя" class="comment-avatar">
+                        {{/if}}
+                        <div class="comment-content">
+                            <p> <span class="comment-author" style="margin-right: 10px;">{{this.author.username}}</span> <span class="comment-date">{{getTime this.createdAt}}</span></p>
+                            <p class="comment-text">{{this.text}}</p>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </section>
+        </section>
+    </main>
